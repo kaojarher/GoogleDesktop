@@ -139,6 +139,75 @@
         .popup-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; padding: 6px; border-radius: 10px; color: white; font-size: 11px; }
         .popup-item:hover { background: rgba(255,255,255,0.15); }
         #groupPopupOverlay { position: fixed; inset: 0; z-index: 299; display: none; }
+        /* ===== 右鍵選單 ===== */
+        #ctxMenu {
+            position: fixed; z-index: 9999; background: rgba(248,248,250,0.97);
+            backdrop-filter: blur(16px); border-radius: 10px; box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+            border: 1px solid rgba(0,0,0,0.1); padding: 5px 0; min-width: 170px; display: none;
+        }
+        .ctx-item { padding: 7px 16px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 9px; color: #222; }
+        .ctx-item:hover { background: #3f8cf3; color: white; }
+        .ctx-sep { border: none; border-top: 1px solid #e0e0e0; margin: 4px 0; }
+        .ctx-danger:hover { background: #e53935; }
+
+        /* ===== 圖片預覽燈箱 ===== */
+        #imgLightbox {
+            display: none; position: fixed; inset: 0; z-index: 5000;
+            background: rgba(0,0,0,0.85); align-items: center; justify-content: center; flex-direction: column;
+        }
+        #imgLightbox.open { display: flex; }
+        #imgLightbox img { max-width: 90vw; max-height: 85vh; border-radius: 8px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+        #imgLightboxName { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 12px; }
+        #imgLightboxClose { position: absolute; top: 18px; right: 24px; font-size: 28px; color: white; cursor: pointer; line-height: 1; }
+
+        /* ===== 搜尋列 ===== */
+        #driveSearchBar { display: flex; gap: 6px; margin-bottom: 8px; }
+        #driveSearchInput { flex: 1; padding: 5px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; }
+        #driveSearchBtn { padding: 5px 12px; border-radius: 6px; border: none; background: #3f8cf3; color: white; cursor: pointer; font-size: 13px; }
+        #driveSearchClear { padding: 5px 10px; border-radius: 6px; border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; font-size: 13px; display: none; }
+
+        /* ===== 排序列 ===== */
+        #driveSortBar { display: flex; gap: 6px; margin-bottom: 8px; align-items: center; font-size: 12px; color: #666; }
+        #driveSortBar select { padding: 3px 7px; border-radius: 6px; border: 1px solid #ccc; font-size: 12px; }
+
+        /* ===== 便利貼 ===== */
+        .sticky-note {
+            position: absolute; width: 200px; min-height: 120px; border-radius: 4px 4px 0 0;
+            box-shadow: 3px 4px 14px rgba(0,0,0,0.25); z-index: 50; cursor: move; display: flex; flex-direction: column;
+        }
+        .sticky-header { height: 26px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px; font-size: 12px; font-weight: bold; border-radius: 4px 4px 0 0; cursor: move; }
+        .sticky-body { flex: 1; padding: 8px; font-size: 13px; resize: none; border: none; background: transparent; outline: none; font-family: inherit; min-height: 90px; }
+        .sticky-close { cursor: pointer; font-size: 14px; background: none; border: none; color: rgba(0,0,0,0.5); }
+
+        /* ===== 視窗最小化 ===== */
+        .min-btn { background: #f5a623 !important; color: white !important; }
+        .max-btn { background: #27c93f !important; color: white !important; }
+        .taskbar-win-btn {
+            height: 70%; padding: 0 10px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 12px; background: rgba(255,255,255,0.2); color: white; max-width: 130px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        body.mac-theme .taskbar-win-btn { background: rgba(0,0,0,0.1); color: #333; }
+        #taskbarWinArea { display: flex; gap: 5px; margin-left: 6px; align-items: center; height: 100%; }
+
+        /* ===== 計算機小工具 ===== */
+        #calc-window .calc-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-top: 8px; }
+        #calc-window .calc-btn { padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #f5f5f5; cursor: pointer; font-size: 15px; font-weight: 500; }
+        #calc-window .calc-btn:hover { background: #e0eaff; }
+        #calc-window .calc-btn.op { background: #dde8ff; color: #245edb; }
+        #calc-window .calc-btn.eq { background: #245edb; color: white; grid-column: span 2; }
+        #calc-window .calc-btn.clr { background: #fde8e8; color: #c0392b; }
+        #calc-window #calcDisplay { font-size: 22px; text-align: right; padding: 8px 10px; background: #f0f4ff; border-radius: 8px; border: 1px solid #ccc; min-height: 44px; word-break: break-all; }
+
+        /* ===== 拖曳上傳覆蓋層 ===== */
+        #dropOverlay {
+            display: none; position: absolute; inset: 0; border-radius: 0 0 10px 10px;
+            background: rgba(63,140,243,0.18); border: 3px dashed #3f8cf3;
+            z-index: 400; align-items: center; justify-content: center;
+            font-size: 22px; color: #3f8cf3; font-weight: bold; pointer-events: none;
+        }
+        #dropOverlay.active { display: flex; }
+
         .dl-btn {
             display: none; position: absolute; bottom: 4px; right: 4px;
             background: rgba(255,255,255,0.9); border: 1px solid #ccc; border-radius: 6px;
@@ -156,7 +225,7 @@
 </div>
 
 <div id="drive-window" class="window" style="width: 680px; height: 500px; left: 80px; top: 80px;">
-    <div class="window-header"><span>🤖 Google Drive 雲端總管</span><div class="window-controls"><button class="close-btn" onclick="closeWindow('drive-window')">✖</button></div></div>
+    <div class="window-header"><span>🤖 Google Drive 雲端總管</span><div class="window-controls"><button class="min-btn" onclick="minimizeWindow('drive-window')">—</button><button class="max-btn" onclick="maximizeWindow('drive-window')">□</button><button class="close-btn" onclick="closeWindow('drive-window')">✖</button></div></div>
     <div class="window-body">
         <div style="margin-bottom:12px; display:flex; justify-content:space-between; align-items: center;">
             <button id="authBtn" onclick="handleAuthClick()" style="background:#4285F4; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">🔑 登入 Google 帳號</button>
@@ -164,20 +233,37 @@
             <button onclick="loadDriveFiles()" id="syncDriveBtn" disabled style="cursor:pointer;">🔄 重新整理</button>
         </div>
         <div style="font-size: 12px; color: #888; margin-bottom: 8px;" id="currentPath">目前路徑: 根目錄 (Root)</div>
+        <div id="driveSearchBar">
+            <input type="text" id="driveSearchInput" placeholder="🔍 搜尋 Drive 檔案..." onkeydown="if(event.key==='Enter')driveSearch()">
+            <button id="driveSearchBtn" onclick="driveSearch()">搜尋</button>
+            <button id="driveSearchClear" onclick="driveClearSearch()">✕ 清除</button>
+        </div>
+        <div id="driveSortBar">
+            排序：<select id="driveSortSelect" onchange="loadDriveFiles()">
+                <option value="name-asc">名稱 A→Z</option>
+                <option value="name-desc">名稱 Z→A</option>
+                <option value="type">類型</option>
+                <option value="folder-first">資料夾優先</option>
+            </select>
+            <div style="flex:1"></div>
+            <span id="driveFileCount" style="font-size:11px; color:#aaa;"></span>
+        </div>
         <div class="drive-toolbar">
             <button id="viewGridBtn" class="active" onclick="setDriveView('grid')">⊞ 格狀</button>
             <button id="viewListBtn" onclick="setDriveView('list')">☰ 列表</button>
+            <button id="newFolderBtn" onclick="createDriveFolder()" disabled style="font-size:12px;">📁➕ 新增資料夾</button>
             <div style="flex:1;"></div>
             <button id="uploadBtn" onclick="document.getElementById('uploadFileInput').click()" disabled style="background:#4285F4; color:white; border:none; border-radius:6px; padding:4px 12px; cursor:pointer; font-size:12px;">⬆️ 上傳</button>
             <input type="file" id="uploadFileInput" multiple style="display:none;" onchange="handleUploadFiles(event)">
         </div>
         <div id="uploadProgress" style="display:none; margin-bottom:6px; font-size:12px; color:#245edb; background:#eef5ff; border-radius:6px; padding:6px 10px;"></div>
+        <div id="dropOverlay">⬆️ 拖曳放開即可上傳</div>
         <div class="drive-list view-grid" id="drive-list-content">請先點擊左上方登入並授權 Google Drive 權限。</div>
     </div>
 </div>
 
 <div id="settings-window" class="window" style="width: 650px; height: 620px; left: 180px; top: 60px;">
-    <div class="window-header"><span>⚙️ 系統設定 & 捷徑管理</span><div class="window-controls"><button class="close-btn" onclick="closeWindow('settings-window')">✖</button></div></div>
+    <div class="window-header"><span>⚙️ 系統設定 & 捷徑管理</span><div class="window-controls"><button class="min-btn" onclick="minimizeWindow('settings-window')">—</button><button class="max-btn" onclick="maximizeWindow('settings-window')">□</button><button class="close-btn" onclick="closeWindow('settings-window')">✖</button></div></div>
     <div class="window-body">
         <div style="background:#f0f0f0; padding:12px; border-radius:12px;">
             <p><strong>🎨 佈景主題</strong></p>
@@ -238,6 +324,55 @@
 
 <div id="startMenu" class="start-menu"></div>
 
+<!-- 圖片預覽燈箱 -->
+<div id="imgLightbox">
+    <span id="imgLightboxClose" onclick="document.getElementById('imgLightbox').classList.remove('open')">✕</span>
+    <img id="imgLightboxImg" src="" alt="">
+    <div id="imgLightboxName"></div>
+</div>
+
+<!-- 右鍵選單 -->
+<div id="ctxMenu">
+    <div class="ctx-item" id="ctxOpen">🔗 在新分頁開啟</div>
+    <div class="ctx-item" id="ctxDownload">⬇️ 下載</div>
+    <div class="ctx-item" id="ctxRename">✏️ 重新命名</div>
+    <div class="ctx-item" id="ctxShare">🔗 複製分享連結</div>
+    <hr class="ctx-sep">
+    <div class="ctx-item ctx-danger" id="ctxDelete">🗑️ 刪除</div>
+</div>
+
+<!-- 計算機視窗 -->
+<div id="calc-window" class="window" style="width:280px; height:380px; right:100px; top:80px; left:auto;">
+    <div class="window-header"><span>🧮 計算機</span><div class="window-controls"><button class="min-btn" onclick="minimizeWindow('calc-window')">—</button><button class="close-btn" onclick="closeWindow('calc-window')">✖</button></div></div>
+    <div class="window-body">
+        <div id="calcDisplay">0</div>
+        <div class="calc-grid">
+            <button class="calc-btn clr" onclick="calcInput('C')">C</button>
+            <button class="calc-btn op" onclick="calcInput('±')">±</button>
+            <button class="calc-btn op" onclick="calcInput('%')">%</button>
+            <button class="calc-btn op" onclick="calcInput('/')">÷</button>
+            <button class="calc-btn" onclick="calcInput('7')">7</button>
+            <button class="calc-btn" onclick="calcInput('8')">8</button>
+            <button class="calc-btn" onclick="calcInput('9')">9</button>
+            <button class="calc-btn op" onclick="calcInput('*')">×</button>
+            <button class="calc-btn" onclick="calcInput('4')">4</button>
+            <button class="calc-btn" onclick="calcInput('5')">5</button>
+            <button class="calc-btn" onclick="calcInput('6')">6</button>
+            <button class="calc-btn op" onclick="calcInput('-')">−</button>
+            <button class="calc-btn" onclick="calcInput('1')">1</button>
+            <button class="calc-btn" onclick="calcInput('2')">2</button>
+            <button class="calc-btn" onclick="calcInput('3')">3</button>
+            <button class="calc-btn op" onclick="calcInput('+')">+</button>
+            <button class="calc-btn" onclick="calcInput('0')" style="grid-column:span 2">0</button>
+            <button class="calc-btn" onclick="calcInput('.')">.</button>
+            <button class="calc-btn eq" onclick="calcInput('=')">=</button>
+        </div>
+    </div>
+</div>
+
+<!-- 便利貼容器 -->
+<div id="stickyContainer"></div>
+
 <div id="groupPopupOverlay" onclick="closeGroupPopup()"></div>
 <div id="groupPopup">
     <div id="groupPopupGrid"></div>
@@ -246,6 +381,7 @@
 <div id="taskbar">
     <button id="start-btn">開始</button>
     <div class="quick-launch" id="quickLaunchArea"></div>
+    <div id="taskbarWinArea"></div>
     <div id="clock" class="taskbar-time">--:--</div>
 </div>
 
@@ -312,6 +448,7 @@
             document.getElementById('syncDriveBtn').disabled = false;
             document.getElementById('forceUploadConfigBtn').disabled = false;
             document.getElementById('uploadBtn').disabled = false;
+            document.getElementById('newFolderBtn').disabled = false;
             document.getElementById('userDisplay').innerText = "雲端硬碟已就緒";
             
             await syncConfigFromDrive();
@@ -325,58 +462,216 @@
         }
     }
 
-    // ======================= 雲端總管讀取 =======================
+    // ======================= 雲端總管讀取（含排序/搜尋/右鍵） =======================
+    let _driveAllFiles = [];
+    let _driveSearchMode = false;
+    let _ctxTarget = null;
+
+    function getFileInfo(file) {
+        const isFolder = file.mimeType === 'application/vnd.google-apps.folder';
+        let icon = '📄', typeBadge = '檔案', isImage = false;
+        if (isFolder)                                             { icon = '📁'; typeBadge = '資料夾'; }
+        else if (file.mimeType.includes('image'))                { icon = '🖼️'; typeBadge = '圖片'; isImage = true; }
+        else if (file.mimeType.includes('pdf'))                  { icon = '📕'; typeBadge = 'PDF'; }
+        else if (file.mimeType.includes('sheet') || file.mimeType.includes('csv')) { icon = '📊'; typeBadge = '試算表'; }
+        else if (file.mimeType.includes('document'))             { icon = '📝'; typeBadge = '文件'; }
+        else if (file.mimeType.includes('presentation'))         { icon = '📑'; typeBadge = '簡報'; }
+        else if (file.mimeType.includes('video'))                { icon = '🎬'; typeBadge = '影片'; }
+        else if (file.mimeType.includes('audio'))                { icon = '🎵'; typeBadge = '音樂'; }
+        else if (file.mimeType.includes('zip') || file.mimeType.includes('compressed')) { icon = '🗜️'; typeBadge = '壓縮檔'; }
+        return { icon, typeBadge, isImage, isFolder };
+    }
+
+    function sortFiles(files) {
+        const s = document.getElementById('driveSortSelect');
+        const mode = s ? s.value : 'folder-first';
+        return [...files].sort((a, b) => {
+            const aF = a.mimeType === 'application/vnd.google-apps.folder';
+            const bF = b.mimeType === 'application/vnd.google-apps.folder';
+            if (mode === 'folder-first') {
+                if (aF !== bF) return aF ? -1 : 1;
+                return a.name.localeCompare(b.name, 'zh-TW');
+            }
+            if (mode === 'name-asc')  return a.name.localeCompare(b.name, 'zh-TW');
+            if (mode === 'name-desc') return b.name.localeCompare(a.name, 'zh-TW');
+            if (mode === 'type')      return a.mimeType.localeCompare(b.mimeType);
+            return 0;
+        });
+    }
+
+    function renderDriveFiles(files, showBack) {
+        const listContent = document.getElementById('drive-list-content');
+        const sorted = sortFiles(files);
+        listContent.innerHTML = '';
+        const currentView = window._driveView || 'grid';
+        listContent.className = 'drive-list view-' + currentView;
+
+        if (showBack) {
+            const back = document.createElement('div');
+            back.className = 'drive-item';
+            back.innerHTML = '<span class="file-icon">⬆️</span><span class="file-name">.. 返回上一層</span>';
+            back.onclick = popFolder;
+            listContent.appendChild(back);
+        }
+
+        sorted.forEach(file => {
+            const { icon, typeBadge, isImage, isFolder } = getFileInfo(file);
+            const item = document.createElement('div');
+            item.className = 'drive-item';
+            item.dataset.fileId = file.id;
+            item.dataset.fileName = file.name;
+            item.dataset.fileMime = file.mimeType;
+
+            item.innerHTML = '<span class="file-icon">' + icon + '</span><span class="file-name" title="' + escapeHtml(file.name) + '">' + escapeHtml(file.name) + '</span><span class="file-type-badge">' + typeBadge + '</span>' +
+                (!isFolder ? '<button class="dl-btn" title="下載">⬇️</button>' : '');
+
+            item.addEventListener('click', () => {
+                if (isFolder) pushFolder(file.id, file.name);
+                else if (isImage) previewImage(file.id, file.name);
+                else window.open(file.webViewLink, '_blank');
+            });
+
+            const dlBtn = item.querySelector('.dl-btn');
+            if (dlBtn) dlBtn.addEventListener('click', e => { e.stopPropagation(); downloadDriveFile(file.id, file.name, file.mimeType); });
+
+            item.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); showCtxMenu(e, file); });
+            listContent.appendChild(item);
+        });
+
+        const countEl = document.getElementById('driveFileCount');
+        if (countEl) countEl.innerText = sorted.length + ' 個項目';
+    }
+
     async function loadDriveFiles() {
         const listContent = document.getElementById('drive-list-content');
         const currentFolderId = driveFolderHistory[driveFolderHistory.length - 1];
-        listContent.innerHTML = "讀取雲端檔案中...";
-        
+        listContent.innerHTML = '<div style="color:#aaa; padding:20px; text-align:center;">⏳ 讀取中...</div>';
+        _driveSearchMode = false;
+        const clearBtn = document.getElementById('driveSearchClear');
+        if (clearBtn) clearBtn.style.display = 'none';
         try {
             const response = await gapi.client.drive.files.list({
-                pageSize: 40,
-                fields: 'nextPageToken, files(id, name, mimeType, webViewLink)',
-                q: `'${currentFolderId}' in parents and trashed = false`
+                pageSize: 100,
+                fields: 'files(id, name, mimeType, webViewLink)',
+                q: "'" + currentFolderId + "' in parents and trashed = false"
             });
-            
-            const files = response.result.files;
-            if (!files || files.length === 0) {
-                listContent.innerHTML = "<div>此資料夾空空如也 🫙</div>";
+            _driveAllFiles = response.result.files || [];
+            if (_driveAllFiles.length === 0) {
+                listContent.innerHTML = '<div style="color:#aaa; padding:20px; text-align:center;">此資料夾空空如也 🫙</div>';
                 return;
             }
-
-            let html = '';
-            if (driveFolderHistory.length > 1) {
-                html += `<div class="drive-item" onclick="popFolder()"><span class="file-icon">⬆️</span><span class="file-name">.. 返回上一層</span></div>`;
-            }
-
-            files.forEach(file => {
-                const isFolder = file.mimeType === 'application/vnd.google-apps.folder';
-                let icon = '📄'; let typeBadge = '檔案';
-                let clickAction = `window.open('${file.webViewLink}', '_blank')`;
-
-                if (isFolder) { icon = '📁'; typeBadge = '資料夾'; clickAction = `pushFolder('${file.id}')`; }
-                else if (file.mimeType.includes('image')) { icon = '🖼️'; typeBadge = '圖片'; }
-                else if (file.mimeType.includes('pdf')) { icon = '📕'; typeBadge = 'PDF'; }
-                else if (file.mimeType.includes('sheet') || file.mimeType.includes('csv')) { icon = '📊'; typeBadge = '試算表'; }
-                else if (file.mimeType.includes('document')) { icon = '📝'; typeBadge = '文件'; }
-                else if (file.mimeType.includes('presentation')) { icon = '📑'; typeBadge = '簡報'; }
-                else if (file.mimeType.includes('video')) { icon = '🎬'; typeBadge = '影片'; }
-                else if (file.mimeType.includes('audio')) { icon = '🎵'; typeBadge = '音樂'; }
-                else if (file.mimeType.includes('zip') || file.mimeType.includes('compressed')) { icon = '🗜️'; typeBadge = '壓縮檔'; }
-
-                const dlBtn = !isFolder ? `<button class="dl-btn" onclick="event.stopPropagation(); downloadDriveFile('${file.id}','${escapeHtml(file.name).replace(/'/g,"\\'")}','${file.mimeType}')" title="下載">⬇️</button>` : '';
-                html += `<div class="drive-item" onclick="${clickAction}"><span class="file-icon">${icon}</span><span class="file-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</span><span class="file-type-badge">${typeBadge}</span>${dlBtn}</div>`;
-            });
-            const currentView = window._driveView || 'grid';
-            listContent.className = `drive-list view-${currentView}`;
-            listContent.innerHTML = html;
+            renderDriveFiles(_driveAllFiles, driveFolderHistory.length > 1);
         } catch (err) {
-            listContent.innerHTML = "❌ 讀取失敗，請確認 API 授權與設定。";
+            console.error(err);
+            listContent.innerHTML = '❌ 讀取失敗，請確認 API 授權與設定。';
         }
     }
 
-    function pushFolder(id) { driveFolderHistory.push(id); loadDriveFiles(); }
-    function popFolder() { driveFolderHistory.pop(); loadDriveFiles(); }
+    async function driveSearch() {
+        const q = document.getElementById('driveSearchInput').value.trim();
+        if (!q) return;
+        const listContent = document.getElementById('drive-list-content');
+        listContent.innerHTML = '<div style="color:#aaa; padding:20px; text-align:center;">🔍 搜尋中...</div>';
+        _driveSearchMode = true;
+        const clearBtn = document.getElementById('driveSearchClear');
+        if (clearBtn) clearBtn.style.display = 'inline-block';
+        try {
+            const token = gapi.client.getToken();
+            const safeQ = q.replace(/'/g, "\\'");
+            const res = await fetch(
+                "https://www.googleapis.com/drive/v3/files?q=" + encodeURIComponent("name contains '" + safeQ + "' and trashed=false") + "&fields=files(id,name,mimeType,webViewLink)&pageSize=50",
+                { headers: { 'Authorization': 'Bearer ' + token.access_token } }
+            );
+            const data = await res.json();
+            const files = data.files || [];
+            if (files.length === 0) { listContent.innerHTML = '<div style="padding:20px;color:#aaa">找不到符合的檔案</div>'; return; }
+            renderDriveFiles(files, false);
+        } catch(e) { listContent.innerHTML = '❌ 搜尋失敗'; }
+    }
+
+    function driveClearSearch() {
+        document.getElementById('driveSearchInput').value = '';
+        const clearBtn = document.getElementById('driveSearchClear');
+        if (clearBtn) clearBtn.style.display = 'none';
+        loadDriveFiles();
+    }
+
+    function pushFolder(id, name) {
+        driveFolderHistory.push(id);
+        const pathEl = document.getElementById('currentPath');
+        if (pathEl) {
+            const cur = pathEl.innerText.replace('目前路徑: ', '');
+            pathEl.innerText = '目前路徑: ' + cur + ' > ' + (name || id);
+        }
+        loadDriveFiles();
+    }
+
+    function popFolder() {
+        if (driveFolderHistory.length <= 1) return;
+        driveFolderHistory.pop();
+        const pathEl = document.getElementById('currentPath');
+        if (pathEl) {
+            const parts = pathEl.innerText.replace('目前路徑: ', '').split(' > ');
+            parts.pop();
+            pathEl.innerText = '目前路徑: ' + parts.join(' > ');
+        }
+        loadDriveFiles();
+    }
+
+    function showCtxMenu(e, file) {
+        _ctxTarget = file;
+        const menu = document.getElementById('ctxMenu');
+        menu.style.display = 'block';
+        const { isFolder } = getFileInfo(file);
+        document.getElementById('ctxOpen').style.display = isFolder ? 'none' : 'flex';
+        document.getElementById('ctxDownload').style.display = isFolder ? 'none' : 'flex';
+        let x = e.clientX, y = e.clientY;
+        if (x + 180 > window.innerWidth) x = window.innerWidth - 185;
+        if (y + 200 > window.innerHeight) y = window.innerHeight - 210;
+        menu.style.left = x + 'px'; menu.style.top = y + 'px';
+    }
+
+    function hideCtxMenu() { document.getElementById('ctxMenu').style.display = 'none'; }
+    document.addEventListener('click', hideCtxMenu);
+
+    document.getElementById('ctxOpen').onclick = () => { if (_ctxTarget) window.open(_ctxTarget.webViewLink, '_blank'); hideCtxMenu(); };
+    document.getElementById('ctxDownload').onclick = () => { if (_ctxTarget) downloadDriveFile(_ctxTarget.id, _ctxTarget.name, _ctxTarget.mimeType); hideCtxMenu(); };
+    document.getElementById('ctxRename').onclick = async () => {
+        if (!_ctxTarget) return;
+        const newName = prompt('新名稱：', _ctxTarget.name);
+        if (!newName || newName === _ctxTarget.name) { hideCtxMenu(); return; }
+        const token = gapi.client.getToken();
+        await fetch('https://www.googleapis.com/drive/v3/files/' + _ctxTarget.id, {
+            method: 'PATCH',
+            headers: { 'Authorization': 'Bearer ' + token.access_token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newName })
+        });
+        hideCtxMenu(); loadDriveFiles();
+    };
+    document.getElementById('ctxShare').onclick = async () => {
+        if (!_ctxTarget) return;
+        const token = gapi.client.getToken();
+        try {
+            await fetch('https://www.googleapis.com/drive/v3/files/' + _ctxTarget.id + '/permissions', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token.access_token, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role: 'reader', type: 'anyone' })
+            });
+            const link = 'https://drive.google.com/file/d/' + _ctxTarget.id + '/view?usp=sharing';
+            await navigator.clipboard.writeText(link);
+            alert('✅ 分享連結已複製到剪貼板！');
+        } catch(err) { alert('❌ 複製失敗：' + err.message); }
+        hideCtxMenu();
+    };
+    document.getElementById('ctxDelete').onclick = async () => {
+        if (!_ctxTarget) return;
+        if (!confirm('確定要將「' + _ctxTarget.name + '」移至垃圾桶？')) { hideCtxMenu(); return; }
+        const token = gapi.client.getToken();
+        await fetch('https://www.googleapis.com/drive/v3/files/' + _ctxTarget.id + '/trash', {
+            method: 'POST', headers: { 'Authorization': 'Bearer ' + token.access_token }
+        });
+        hideCtxMenu(); loadDriveFiles();
+    };
 
     // ======================= 雲端設定同步（自雲端載入） =======================
     async function syncConfigFromDrive() {
@@ -555,6 +850,8 @@
         menu.innerHTML = `
             <div class="start-menu-item" onclick="openWindow('drive-window'); closeStartMenu();"><span>📁</span> Google 雲端總管</div>
             <div class="start-menu-item" onclick="openWindow('settings-window'); closeStartMenu();"><span>⚙️</span> 系統控制設定</div>
+            <div class="start-menu-item" onclick="openWindow('calc-window'); closeStartMenu();"><span>🧮</span> 計算機</div>
+            <div class="start-menu-item" onclick="addStickyNote(); closeStartMenu();"><span>📝</span> 新增便利貼</div>
             <hr>
         `;
         systemConfig.shortcuts.forEach(short => {
@@ -643,8 +940,6 @@
 
     function deleteGroup(id) { systemConfig.groups = systemConfig.groups.filter(g => g.id !== id); saveSettingsLocally(); }
     function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
-    function openWindow(id) { const w = document.getElementById(id); if(w){ w.style.display='flex'; w.style.zIndex=105; } }
-    function closeWindow(id) { document.getElementById(id).style.display='none'; }
     function updateClock() { document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
     
     function initDragWindows() {
@@ -813,6 +1108,188 @@
         } catch(err) {
             alert(`❌ 下載失敗：${err.message}`);
         }
+    }
+
+    // ===== 圖片預覽 =====
+    async function previewImage(fileId, fileName) {
+        const token = gapi.client.getToken();
+        if (!token) return;
+        try {
+            const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, { headers: { 'Authorization': `Bearer ${token.access_token}` } });
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            document.getElementById('imgLightboxImg').src = url;
+            document.getElementById('imgLightboxName').innerText = fileName;
+            document.getElementById('imgLightbox').classList.add('open');
+        } catch(e) { alert('圖片載入失敗'); }
+    }
+    document.getElementById('imgLightbox').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+
+    // ===== 新增資料夾 =====
+    async function createDriveFolder() {
+        const name = prompt('新資料夾名稱：');
+        if (!name) return;
+        const token = gapi.client.getToken();
+        const currentFolderId = driveFolderHistory[driveFolderHistory.length - 1];
+        try {
+            const res = await fetch('https://www.googleapis.com/drive/v3/files', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token.access_token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, mimeType: 'application/vnd.google-apps.folder', parents: [currentFolderId] })
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            loadDriveFiles();
+        } catch(e) { alert('建立失敗：' + e.message); }
+    }
+
+    // ===== 拖曳上傳 =====
+    (function() {
+        const winBody = document.querySelector('#drive-window .window-body');
+        if (!winBody) return;
+        const overlay = document.getElementById('dropOverlay');
+        winBody.addEventListener('dragover', e => { e.preventDefault(); overlay.classList.add('active'); });
+        winBody.addEventListener('dragleave', e => { if (!winBody.contains(e.relatedTarget)) overlay.classList.remove('active'); });
+        winBody.addEventListener('drop', async e => {
+            e.preventDefault(); overlay.classList.remove('active');
+            const token = gapi.client.getToken();
+            if (!token) { alert('請先登入'); return; }
+            const files = Array.from(e.dataTransfer.files);
+            if (!files.length) return;
+            const progressEl = document.getElementById('uploadProgress');
+            const currentFolderId = driveFolderHistory[driveFolderHistory.length - 1];
+            progressEl.style.display = 'block';
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                progressEl.innerText = `⬆️ 拖曳上傳 (${i+1}/${files.length})：${file.name}`;
+                const metadata = { name: file.name, parents: [currentFolderId] };
+                const form = new FormData();
+                form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                form.append('file', file);
+                await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', { method: 'POST', headers: { 'Authorization': `Bearer ${token.access_token}` }, body: form });
+            }
+            progressEl.innerText = `✅ 已上傳 ${files.length} 個檔案`;
+            setTimeout(() => { progressEl.style.display = 'none'; }, 3000);
+            loadDriveFiles();
+        });
+    })();
+
+    // ===== 視窗最小化 / 最大化 =====
+    const _winStates = {};
+    function minimizeWindow(id) {
+        const w = document.getElementById(id);
+        if (!w) return;
+        _winStates[id] = _winStates[id] || {};
+        if (w.dataset.minimized === '1') {
+            w.style.height = _winStates[id].h || '';
+            w.querySelector('.window-body').style.display = '';
+            w.dataset.minimized = '0';
+        } else {
+            _winStates[id].h = w.style.height;
+            w.querySelector('.window-body').style.display = 'none';
+            w.style.height = '32px';
+            w.dataset.minimized = '1';
+        }
+        updateTaskbarWins();
+    }
+    function maximizeWindow(id) {
+        const w = document.getElementById(id);
+        if (!w) return;
+        _winStates[id] = _winStates[id] || {};
+        if (w.dataset.maximized === '1') {
+            w.style.left = _winStates[id].left || '80px';
+            w.style.top  = _winStates[id].top  || '80px';
+            w.style.width  = _winStates[id].width  || '';
+            w.style.height = _winStates[id].height || '';
+            w.dataset.maximized = '0';
+        } else {
+            _winStates[id].left   = w.style.left;
+            _winStates[id].top    = w.style.top;
+            _winStates[id].width  = w.style.width;
+            _winStates[id].height = w.style.height;
+            w.style.left = '0'; w.style.top = '0';
+            w.style.width  = '100vw'; w.style.height = 'calc(100vh - 50px)';
+            w.dataset.maximized = '1';
+        }
+    }
+
+    // 工作列視窗按鈕
+    const _openWindows = {};
+    function openWindow(id) {
+        const w = document.getElementById(id);
+        if (!w) return;
+        w.style.display = 'flex'; w.style.zIndex = 105;
+        _openWindows[id] = true;
+        updateTaskbarWins();
+    }
+    function closeWindow(id) {
+        document.getElementById(id).style.display = 'none';
+        delete _openWindows[id];
+        updateTaskbarWins();
+    }
+    function updateTaskbarWins() {
+        const area = document.getElementById('taskbarWinArea');
+        if (!area) return;
+        area.innerHTML = '';
+        Object.keys(_openWindows).forEach(id => {
+            const w = document.getElementById(id);
+            if (!w) return;
+            const title = w.querySelector('.window-header span')?.innerText || id;
+            const btn = document.createElement('button');
+            btn.className = 'taskbar-win-btn';
+            btn.innerText = title;
+            btn.title = title;
+            btn.onclick = () => {
+                if (w.dataset.minimized === '1') minimizeWindow(id);
+                w.style.zIndex = 1000;
+                document.querySelectorAll('.window').forEach(x => { if (x !== w) x.style.zIndex = 100; });
+            };
+            area.appendChild(btn);
+        });
+    }
+
+    // ===== 便利貼 =====
+    const stickyColors = [
+        {bg:'#fff9c4', hdr:'#f9a825'},
+        {bg:'#c8e6c9', hdr:'#388e3c'},
+        {bg:'#bbdefb', hdr:'#1565c0'},
+        {bg:'#f8bbd0', hdr:'#c2185b'},
+        {bg:'#ffe0b2', hdr:'#e65100'}
+    ];
+    let _stickyCount = 0;
+    function addStickyNote() {
+        const c = stickyColors[_stickyCount % stickyColors.length];
+        _stickyCount++;
+        const note = document.createElement('div');
+        note.className = 'sticky-note';
+        note.style.cssText = `left:${80 + _stickyCount*20}px; top:${100 + _stickyCount*20}px; background:${c.bg}`;
+        note.innerHTML = `<div class="sticky-header" style="background:${c.hdr}; color:white;">📝 便利貼 <button class="sticky-close" onclick="this.closest('.sticky-note').remove()">✕</button></div><textarea class="sticky-body" placeholder="在此輸入文字..."></textarea>`;
+        document.getElementById('stickyContainer').appendChild(note);
+        // 拖曳
+        const hdr = note.querySelector('.sticky-header');
+        let drag = false, ox, oy;
+        hdr.addEventListener('mousedown', e => { if(e.target.tagName==='BUTTON') return; drag=true; ox=e.clientX-note.offsetLeft; oy=e.clientY-note.offsetTop; e.preventDefault(); });
+        window.addEventListener('mousemove', e => { if(drag) { note.style.left=(e.clientX-ox)+'px'; note.style.top=(e.clientY-oy)+'px'; } });
+        window.addEventListener('mouseup', () => drag=false);
+    }
+
+    // ===== 計算機 =====
+    let _calcExpr = ''; let _calcNewNum = true;
+    function calcInput(v) {
+        const disp = document.getElementById('calcDisplay');
+        if (v === 'C') { _calcExpr = ''; _calcNewNum = true; disp.innerText = '0'; return; }
+        if (v === '=') {
+            try {
+                const result = Function('"use strict"; return (' + _calcExpr + ')')();
+                _calcExpr = String(parseFloat(result.toFixed(10)));
+                disp.innerText = _calcExpr; _calcNewNum = true;
+            } catch(e) { disp.innerText = '錯誤'; _calcExpr = ''; _calcNewNum = true; }
+            return;
+        }
+        if (v === '±') { if (_calcExpr) { _calcExpr = _calcExpr.startsWith('-') ? _calcExpr.slice(1) : '-'+_calcExpr; disp.innerText = _calcExpr; } return; }
+        if (v === '%') { try { _calcExpr = String(parseFloat(Function('"use strict"; return ('+_calcExpr+')')() / 100)); disp.innerText = _calcExpr; } catch(e){} return; }
+        if (_calcNewNum && '+-*/'.includes(v)) { _calcNewNum = false; }
+        else if (_calcNewNum) { _calcExpr = ''; _calcNewNum = false; }
+        _calcExpr += v; disp.innerText = _calcExpr;
     }
 
     window._driveView = 'grid';
