@@ -216,6 +216,35 @@
         .drive-list.view-grid .drive-item { position: relative; }
         .drive-list.view-grid .drive-item:hover .dl-btn { display: block; }
         .drive-list.view-list .dl-btn { display: inline-block; margin-left: auto; flex-shrink: 0; }
+
+        /* ===== 圖示選取器 ===== */
+        .icon-picker-tabs { display:flex; gap:4px; margin:8px 0 6px; }
+        .icon-tab-btn { flex:1; padding:5px; border:1px solid #ccc; border-radius:6px; background:#f5f5f5; cursor:pointer; font-size:12px; }
+        .icon-tab-btn.active { background:#245edb; color:white; border-color:#245edb; }
+        .icon-tab-panel { display:none; }
+        .icon-tab-panel.active { display:block; }
+
+        /* Emoji 格狀 */
+        .emoji-category-tabs { display:flex; gap:3px; flex-wrap:wrap; margin-bottom:6px; }
+        .emoji-cat-btn { padding:3px 8px; border:1px solid #ddd; border-radius:12px; background:#f0f0f0; cursor:pointer; font-size:11px; }
+        .emoji-cat-btn.active { background:#245edb; color:white; border-color:#245edb; }
+        .emoji-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:3px; max-height:130px; overflow-y:auto; border:1px solid #eee; border-radius:6px; padding:5px; }
+        .emoji-cell { font-size:22px; text-align:center; cursor:pointer; border-radius:6px; padding:2px; line-height:1.3; }
+        .emoji-cell:hover { background:#eef5ff; }
+        .emoji-cell.selected { background:#245edb; border-radius:6px; }
+
+        /* 圖示預覽 */
+        #iconPreviewBox { display:flex; align-items:center; gap:12px; margin:8px 0; padding:8px 12px; background:#f7f7f7; border-radius:8px; border:1px solid #e0e0e0; }
+        #iconPreviewImg { width:48px; height:48px; object-fit:contain; border-radius:8px; border:1px solid #ccc; display:none; }
+        #iconPreviewEmoji { font-size:42px; line-height:1; }
+        #iconPreviewLabel { font-size:12px; color:#888; }
+
+        /* 圖片URL輸入 */
+        #iconUrlInput { width:100%; padding:6px 8px; border-radius:6px; border:1px solid #ccc; font-size:12px; margin-top:4px; }
+        #iconUrlPreviewImg { width:48px; height:48px; object-fit:contain; border-radius:6px; margin-top:6px; border:1px solid #ddd; display:none; }
+
+        /* 捷徑對話框調高 */
+        #shortcutDialog { height: auto !important; }
     </style>
 </head>
 <body class="xp-theme">
@@ -294,16 +323,56 @@
     </div>
 </div>
 
-<div id="shortcutDialog" class="window" style="width: 440px; height: 450px; left: 250px; top: 120px;">
+<div id="shortcutDialog" class="window" style="width:480px; left:220px; top:60px;">
     <div class="window-header"><span id="dialogTitle">➕ 建立捷徑</span><div class="window-controls"><button class="close-btn" onclick="closeWindow('shortcutDialog')">✖</button></div></div>
     <div class="window-body">
         <div class="shortcut-form">
-            <label>捷徑名稱:</label><input type="text" id="editShortcutName" placeholder="例如: Google首頁">
-            <label>輸入圖示 (Emoji):</label><input type="text" id="customEmojiInput" placeholder="🌐" value="🌐" maxlength="2" style="width:60px; text-align:center;">
-            <label>動作類型:</label>
+            <label>捷徑名稱:</label>
+            <input type="text" id="editShortcutName" placeholder="例如: Google首頁">
+
+            <label>圖示選取:</label>
+            <!-- 預覽列 -->
+            <div id="iconPreviewBox">
+                <div id="iconPreviewEmoji">🌐</div>
+                <img id="iconPreviewImg" src="" alt="">
+                <div>
+                    <div style="font-size:14px; font-weight:500;" id="iconPreviewName">目前圖示</div>
+                    <div id="iconPreviewLabel">點選下方選取圖示</div>
+                </div>
+            </div>
+            <!-- 分頁切換 -->
+            <div class="icon-picker-tabs">
+                <button class="icon-tab-btn active" onclick="switchIconTab('emoji')">😊 Emoji 選取</button>
+                <button class="icon-tab-btn" onclick="switchIconTab('manual')">⌨️ 手動輸入</button>
+                <button class="icon-tab-btn" onclick="switchIconTab('imgurl')">🖼️ 圖片網址</button>
+            </div>
+
+            <!-- Emoji 選取面板 -->
+            <div class="icon-tab-panel active" id="iconTabEmoji">
+                <div class="emoji-category-tabs" id="emojiCatTabs"></div>
+                <div class="emoji-grid" id="emojiGrid"></div>
+            </div>
+            <!-- 手動輸入面板 -->
+            <div class="icon-tab-panel" id="iconTabManual">
+                <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+                    <input type="text" id="customEmojiInput" placeholder="🌐" value="🌐" maxlength="2" style="width:64px; text-align:center; font-size:28px; padding:4px;">
+                    <span style="font-size:12px; color:#888;">直接貼上任意 Emoji</span>
+                </div>
+            </div>
+            <!-- 圖片網址面板 -->
+            <div class="icon-tab-panel" id="iconTabImgurl">
+                <input type="text" id="iconUrlInput" placeholder="https://example.com/icon.png" oninput="previewIconUrl(this.value)">
+                <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+                    <img id="iconUrlPreviewImg" src="" alt="">
+                    <span id="iconUrlStatus" style="font-size:12px; color:#888;">輸入圖片網址後預覽</span>
+                </div>
+            </div>
+
+            <label style="margin-top:10px;">動作類型:</label>
             <select id="editShortcutActionType"><option value="url">開啟網址</option><option value="function">執行內建函數</option></select>
-            <label>目標網址或函數呼叫:</label><input type="text" id="editShortcutTarget" placeholder="https://... 或 openWindow('drive-window')">
-            <label><input type="checkbox" id="editShortcutPinTaskbar"> 顯示於工作列快捷區域</label>
+            <label>目標網址或函數呼叫:</label>
+            <input type="text" id="editShortcutTarget" placeholder="https://... 或 openWindow('drive-window')">
+            <label style="margin-top:6px;"><input type="checkbox" id="editShortcutPinTaskbar"> 顯示於工作列快捷區域</label>
             <button id="saveShortcutBtn" style="margin-top:12px; width:100%; padding:10px; background:#245edb; color:white; border:none; border-radius:6px; cursor:pointer;">💾 儲存捷徑</button>
         </div>
     </div>
@@ -801,7 +870,10 @@
             const members = group.memberIds.map(id => systemConfig.shortcuts.find(s => s.id === id)).filter(Boolean);
             const groupDiv = document.createElement('div');
             groupDiv.className = 'icon-group';
-            const previews = members.slice(0, 4).map(s => `<div class="group-preview-icon">${s.icon || '📄'}</div>`).join('');
+            const previews = members.slice(0, 4).map(s => {
+                if (s.iconType === 'img' && s.iconUrl) return `<div class="group-preview-icon"><img src="${escapeHtml(s.iconUrl)}" style="width:100%;height:100%;object-fit:contain;border-radius:3px;"></div>`;
+                return `<div class="group-preview-icon">${s.icon || '📄'}</div>`;
+            }).join('');
             let extra = ''; for (let i = members.length; i < 4; i++) extra += `<div class="group-preview-icon"></div>`;
             
             groupDiv.innerHTML = `<div class="group-folder">${previews}${extra}</div><span>${escapeHtml(group.name)}</span>`;
@@ -813,7 +885,10 @@
             if (groupedIds.has(shortcut.id)) return;
             const iconDiv = document.createElement('div');
             iconDiv.className = 'icon';
-            iconDiv.innerHTML = `<div class="icon-img" style="font-size:36px;">${shortcut.icon || '📄'}</div><span>${escapeHtml(shortcut.name)}</span>`;
+            const imgHtml = shortcut.iconType === 'img' && shortcut.iconUrl
+                ? `<img src="${escapeHtml(shortcut.iconUrl)}" style="width:48px;height:48px;object-fit:contain;border-radius:8px;" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span style="display:none;font-size:36px;">📄</span>`
+                : `<div style="font-size:36px;">${shortcut.icon || '📄'}</div>`;
+            iconDiv.innerHTML = `<div class="icon-img">${imgHtml}</div><span>${escapeHtml(shortcut.name)}</span>`;
             iconDiv.addEventListener('click', (e) => { e.stopPropagation(); executeAction(shortcut); });
             container.appendChild(iconDiv);
         });
@@ -879,34 +954,179 @@
     }
 
     function renderShortcutManager() {
-        const container = document.getElementById('shortcutListContainer'); if (!container) return;
-        container.innerHTML = systemConfig.shortcuts.map(short => `
-            <div class="shortcut-row">
-                <span>${short.icon} ${escapeHtml(short.name)}</span>
-                <div>
-                    <label style="font-size:11px;"><input type="checkbox" class="pin-cb" data-id="${short.id}" ${short.pinToTaskbar ? 'checked' : ''}> Pin</label>
-                    <button onclick="deleteShortcut(${short.id})">🗑️</button>
-                </div>
-            </div>
-        `).join('');
-        container.querySelectorAll('.pin-cb').forEach(cb => cb.addEventListener('change', (e) => {
-            const id = parseInt(cb.getAttribute('data-id'));
-            const s = systemConfig.shortcuts.find(shortcut => shortcut.id === id);
-            if (s) { s.pinToTaskbar = cb.checked; saveSettingsLocally(); }
-        }));
+        const c = document.getElementById('shortcutListContainer');
+        c.innerHTML = '';
+        systemConfig.shortcuts.forEach(s => {
+            const row = document.createElement('div');
+            row.className = 'shortcut-row';
+            const iconHtml = s.iconType === 'img' && s.iconUrl
+                ? `<img src="${escapeHtml(s.iconUrl)}" style="width:20px;height:20px;object-fit:contain;border-radius:3px;" onerror="this.style.display='none'">`
+                : `<span>${s.icon || '📄'}</span>`;
+            row.innerHTML = `<span>${iconHtml} ${escapeHtml(s.name)}</span>
+                <div style="display:flex;gap:4px;">
+                    <button onclick="editShortcut(${s.id})" style="font-size:11px;padding:2px 7px;border-radius:5px;border:1px solid #aaa;cursor:pointer;">✏️</button>
+                    <button onclick="deleteShortcut(${s.id}); renderAllUI();" style="font-size:11px;padding:2px 7px;border-radius:5px;border:1px solid #f99;cursor:pointer;color:#c00;">🗑️</button>
+                </div>`;
+            c.appendChild(row);
+        });
     }
 
-    document.getElementById('saveShortcutBtn').onclick = () => {
-        const name = document.getElementById('editShortcutName').value.trim();
-        const icon = document.getElementById('customEmojiInput').value.trim() || '🌐';
-        const actionType = document.getElementById('editShortcutActionType').value;
-        const target = document.getElementById('editShortcutTarget').value.trim();
-        const pin = document.getElementById('editShortcutPinTaskbar').checked;
+    function editShortcut(id) {
+        const s = systemConfig.shortcuts.find(sc => sc.id === id);
+        if (!s) return;
+        openShortcutDialogForNew();
+        setTimeout(() => {
+            document.getElementById('dialogTitle').innerText = '✏️ 編輯捷徑';
+            document.getElementById('editShortcutName').value = s.name;
+            document.getElementById('editShortcutTarget').value = s.actionValue;
+            document.getElementById('editShortcutActionType').value = s.actionType;
+            document.getElementById('editShortcutPinTaskbar').checked = s.pinToTaskbar;
+            document.getElementById('saveShortcutBtn').dataset.editId = id;
+            if (s.iconType === 'img' && s.iconUrl) {
+                document.getElementById('iconUrlInput').value = s.iconUrl;
+                previewIconUrl(s.iconUrl);
+                switchIconTab('imgurl');
+            } else {
+                _selectedEmoji = s.icon || '🌐';
+                document.getElementById('customEmojiInput').value = s.icon || '🌐';
+                _currentIconType = 'emoji';
+                renderEmojiGrid(_currentEmojiCat);
+                updateIconPreview();
+            }
+        }, 50);
+    }
 
-        if(!name || !target) { alert('欄位不完整'); return; }
-        systemConfig.shortcuts.push({ id: systemConfig.nextId++, name, icon, actionType, actionValue: target, pinToTaskbar: pin });
-        closeWindow('shortcutDialog'); saveSettingsLocally();
+
+    // ── 圖示選取器狀態 ──
+    const EMOJI_CATEGORIES = {
+        '辦公室': ['📁','📂','🗂️','📋','📌','📍','📎','🖇️','✂️','🖊️','🖋️','📝','✏️','📏','📐','🗃️','🗄️','🗑️','📊','📈','📉','📆','📅','🗓️','📇','📓','📔','📒','📕','📗','📘','📙','📚','📖','🔖','🏷️','💼','🗝️','🔑','🔐','🔒','🔓','📧','📨','📩','📤','📥','📦','📫','📪','📬','📭','📮','✅','☑️','❎'],
+        '通訊':  ['💬','💭','🗨️','📣','📢','🔔','🔕','📱','☎️','📞','📟','📠','🖥️','💻','🖨️','⌨️','🖱️','💾','💿','📀','📺','📷','📸','📹','🎥','📡','🔭','🔬','💡','🔦','🕯️'],
+        '工具':  ['🔧','🔨','⚙️','🔩','🪛','🪚','⛏️','🪝','🧰','🪜','🧲','🔗','⛓️','🧱','🪣','🧹','🧺','🧻','🧼','🚪','🏗️','🔮'],
+        '人物':  ['👤','👥','🧑‍💼','👨‍💼','👩‍💼','🧑‍💻','👨‍💻','👩‍💻','🧑‍🎨','🧑‍🔬','🧑‍🏫','👨‍🏫','👩‍🏫','🤝','👋','🙌','👏','✍️','💪','🧠','👁️','👀'],
+        '圖表':  ['📊','📈','📉','🗺️','🧭','📐','📏','🔢','💯','🔰','♾️','✳️','❇️','🔴','🟠','🟡','🟢','🔵','🟣','⚫','⚪','🟤'],
+        '媒體':  ['🎵','🎶','🎼','🎤','🎧','🎷','🎸','🎹','🎺','🥁','🎬','🎭','🎨','🖼️','🎪','🎯','🎮','🕹️','🎲','🧩','♟️','🏆','🥇','🥈','🥉'],
+        '自然':  ['🌍','🌎','🌏','🗺️','🌐','🌱','🌿','☘️','🍀','🌸','🌺','🌻','🌞','🌙','⭐','🌟','💫','⚡','🔥','💧','🌊','❄️','🌈','☁️','⛅','🌤️'],
+        '符號':  ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💕','💞','💓','💗','💖','💘','💝','✨','💥','💢','💦','💨','💬','💭','🔱','⚜️','♻️','✅','❌','❓','❗','➕','➖','➗','✖️','💲','©️','®️','™️']
     };
+    let _currentIconType = 'emoji';
+    let _selectedEmoji   = '🌐';
+    let _selectedIconUrl = '';
+    let _currentEmojiCat = '辦公室';
+
+
+    function initEmojiPicker() {
+        const catTabs = document.getElementById('emojiCatTabs');
+        catTabs.innerHTML = '';
+        Object.keys(EMOJI_CATEGORIES).forEach((cat, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'emoji-cat-btn' + (i === 0 ? ' active' : '');
+            btn.innerText = cat;
+            btn.onclick = () => { _currentEmojiCat = cat; renderEmojiGrid(cat); document.querySelectorAll('.emoji-cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); };
+            catTabs.appendChild(btn);
+        });
+        renderEmojiGrid('辦公室');
+    }
+
+    function renderEmojiGrid(cat) {
+        const grid = document.getElementById('emojiGrid');
+        grid.innerHTML = '';
+        EMOJI_CATEGORIES[cat].forEach(em => {
+            const cell = document.createElement('div');
+            cell.className = 'emoji-cell' + (em === _selectedEmoji ? ' selected' : '');
+            cell.innerText = em;
+            cell.title = em;
+            cell.onclick = () => {
+                _selectedEmoji = em;
+                _currentIconType = 'emoji';
+                document.querySelectorAll('.emoji-cell').forEach(c => c.classList.remove('selected'));
+                cell.classList.add('selected');
+                updateIconPreview();
+            };
+            grid.appendChild(cell);
+        });
+    }
+
+    function switchIconTab(tab) {
+        document.querySelectorAll('.icon-tab-btn').forEach((b, i) => b.classList.toggle('active', ['emoji','manual','imgurl'][i] === tab));
+        document.getElementById('iconTabEmoji').classList.toggle('active', tab === 'emoji');
+        document.getElementById('iconTabManual').classList.toggle('active', tab === 'manual');
+        document.getElementById('iconTabImgurl').classList.toggle('active', tab === 'imgurl');
+        if (tab === 'emoji') { _currentIconType = 'emoji'; updateIconPreview(); }
+        if (tab === 'manual') { _currentIconType = 'emoji'; updateIconPreview(); }
+    }
+
+    function updateIconPreview() {
+        const emojiEl = document.getElementById('iconPreviewEmoji');
+        const imgEl = document.getElementById('iconPreviewImg');
+        const labelEl = document.getElementById('iconPreviewLabel');
+        const manualVal = document.getElementById('customEmojiInput')?.value?.trim();
+
+        if (_currentIconType === 'img' && _selectedIconUrl) {
+            emojiEl.style.display = 'none';
+            imgEl.style.display = 'block';
+            imgEl.src = _selectedIconUrl;
+            labelEl.innerText = '圖片 URL';
+        } else {
+            const em = manualVal || _selectedEmoji || '🌐';
+            emojiEl.style.display = 'block';
+            emojiEl.innerText = em;
+            imgEl.style.display = 'none';
+            labelEl.innerText = '選取的 Emoji';
+        }
+    }
+
+    function previewIconUrl(url) {
+        const img = document.getElementById('iconUrlPreviewImg');
+        const status = document.getElementById('iconUrlStatus');
+        if (!url) { img.style.display = 'none'; status.innerText = '輸入圖片網址後預覽'; return; }
+        img.style.display = 'block';
+        img.src = url;
+        img.onload = () => { _selectedIconUrl = url; _currentIconType = 'img'; status.innerText = '✅ 圖片載入成功'; updateIconPreview(); };
+        img.onerror = () => { status.innerText = '❌ 圖片無法載入'; _currentIconType = 'emoji'; };
+    }
+
+    function openShortcutDialogForNew() {
+        document.getElementById('dialogTitle').innerText = '➕ 建立捷徑';
+        document.getElementById('editShortcutName').value = '';
+        document.getElementById('editShortcutTarget').value = '';
+        document.getElementById('editShortcutPinTaskbar').checked = false;
+        document.getElementById('customEmojiInput').value = '🌐';
+        document.getElementById('iconUrlInput').value = '';
+        document.getElementById('iconUrlPreviewImg').style.display = 'none';
+        document.getElementById('iconUrlStatus').innerText = '輸入圖片網址後預覽';
+        _selectedEmoji = '🌐'; _selectedIconUrl = ''; _currentIconType = 'emoji';
+        document.getElementById('saveShortcutBtn').dataset.editId = '';
+        switchIconTab('emoji');
+        updateIconPreview();
+        initEmojiPicker();
+        openWindow('shortcutDialog');
+    }
+
+    document.getElementById('customEmojiInput').addEventListener('input', function() {
+        if (this.value.trim()) { _selectedEmoji = this.value.trim(); _currentIconType = 'emoji'; updateIconPreview(); }
+    });
+
+    function _doSaveShortcut() {
+        const name       = document.getElementById('editShortcutName').value.trim();
+        const actionType = document.getElementById('editShortcutActionType').value;
+        const target     = document.getElementById('editShortcutTarget').value.trim();
+        const pin        = document.getElementById('editShortcutPinTaskbar').checked;
+        const manualEmoji = document.getElementById('customEmojiInput').value.trim();
+        const editId     = parseInt(document.getElementById('saveShortcutBtn').dataset.editId) || 0;
+        const iconType   = _currentIconType;
+        const icon       = manualEmoji || _selectedEmoji || '🌐';
+        const iconUrl    = _selectedIconUrl;
+        if (!name || !target) { alert('欄位不完整'); return; }
+        if (editId) {
+            const sc = systemConfig.shortcuts.find(x => x.id === editId);
+            if (sc) { sc.name = name; sc.icon = icon; sc.iconType = iconType; sc.iconUrl = iconUrl; sc.actionType = actionType; sc.actionValue = target; sc.pinToTaskbar = pin; }
+        } else {
+            systemConfig.shortcuts.push({ id: systemConfig.nextId++, name, icon, iconType, iconUrl, actionType, actionValue: target, pinToTaskbar: pin });
+        }
+        closeWindow('shortcutDialog');
+        saveSettingsLocally();
+        renderAllUI();
+    }
 
     function deleteShortcut(id) {
         systemConfig.shortcuts = systemConfig.shortcuts.filter(s => s.id !== id);
@@ -957,6 +1177,15 @@
         });
     }
 
+    function initIconPickerEvents() {
+        document.getElementById('customEmojiInput').addEventListener('input', function() {
+            _selectedEmoji = this.value.trim() || _selectedEmoji;
+            _currentIconType = 'emoji';
+            updateIconPreview();
+        });
+        document.getElementById('saveShortcutBtn').addEventListener('click', _doSaveShortcut);
+    }
+
     function bindSystemEvents() {
         document.getElementById('xpThemeBtn').onclick = () => { systemConfig.theme = "xp"; saveSettingsLocally(); applySystemSettings(); };
         document.getElementById('macThemeBtn').onclick = () => { systemConfig.theme = "mac"; saveSettingsLocally(); applySystemSettings(); };
@@ -968,7 +1197,8 @@
             systemConfig.wallpaperValue = DEFAULT_WALLPAPER;
             saveSettingsLocally(); applySystemSettings();
         };
-        document.getElementById('newShortcutBtn').onclick = () => openWindow('shortcutDialog');
+        document.getElementById('newShortcutBtn').onclick = () => openShortcutDialogForNew();
+        initIconPickerEvents();
         document.getElementById('newGroupBtn').onclick = () => openGroupDialog();
         document.getElementById('start-btn').onclick = (e) => { e.stopPropagation(); toggleStartMenu(); };
         document.addEventListener('click', () => closeStartMenu());
